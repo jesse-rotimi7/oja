@@ -56,7 +56,9 @@ export const fetchCategories = async (): Promise<string[]> => {
     if (typeof data[0] === 'string') {
       return data
     }
-    return data.map((item: any) => item?.slug || item?.name || item).filter(Boolean)
+    return data.map((item: { slug?: string; name?: string } | string) => 
+      typeof item === 'string' ? item : (item?.slug || item?.name || '')
+    ).filter(Boolean) as string[]
   }
   return []
 }

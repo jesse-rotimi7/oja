@@ -6,7 +6,7 @@ import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { CheckCircle, Package, Truck, Mail, ArrowRight, Home, ShoppingBag } from 'lucide-react'
+import { CheckCircle, Package, Truck, Mail, ArrowRight, Home } from 'lucide-react'
 
 export default function CheckoutSuccessPage() {
   return (
@@ -80,7 +80,7 @@ export default function CheckoutSuccessPage() {
               transition={{ duration: 0.5, delay: 0.6 }}
               className="space-y-6"
             >
-              <h2 className="text-xl font-semibold text-gray-900">What's Next?</h2>
+              <h2 className="text-xl font-semibold text-gray-900">What&apos;s Next?</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">

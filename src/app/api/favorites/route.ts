@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
 
     const favorite = await prisma.favorite.create({
       data: {
-        sessionId: userId ? undefined : sessionId,
+        sessionId,
         userId: userId || undefined,
         productId: Number(productId),
       },

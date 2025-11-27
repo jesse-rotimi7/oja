@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
         address,
         status: 'pending',
         items: {
-          create: items.map((item: any) => ({
+          create: items.map((item: { productId: number; title: string; price: number; quantity: number; image?: string }) => ({
             productId: item.productId,
             title: item.title,
             price: item.price,

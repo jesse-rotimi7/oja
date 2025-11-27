@@ -3,6 +3,7 @@
 import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
+import Image from 'next/image'
 import { fetchProducts } from '@/lib/api'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
@@ -98,9 +99,11 @@ export default function Home() {
                         className="bg-white rounded-2xl p-4 shadow-lg"
                       >
                         <div className="aspect-square bg-gray-50 rounded-xl mb-3 relative overflow-hidden">
-                          <img
+                          <Image
                             src={product.image}
                             alt={product.title}
+                            width={200}
+                            height={200}
                             className="w-full h-full object-contain"
                           />
                         </div>
@@ -215,7 +218,7 @@ export default function Home() {
                 Shop by Category
               </h2>
               <p className="text-xl text-gray-600">
-                Find exactly what you're looking for
+                Find exactly what you&apos;re looking for
               </p>
             </div>
 

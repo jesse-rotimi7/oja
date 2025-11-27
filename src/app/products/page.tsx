@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Search, Filter, Grid, List } from 'lucide-react'
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams()
   const category = searchParams.get('category')
   const [searchTerm, setSearchTerm] = useState('')
@@ -222,6 +222,24 @@ export default function ProductsPage() {
 
       <Footer />
     </div>
+  )
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white">
+        <Header />
+        <main className="pt-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+            <p className="text-gray-600">Loading...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   )
 }
 

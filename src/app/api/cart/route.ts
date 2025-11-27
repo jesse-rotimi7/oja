@@ -71,9 +71,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(updated)
     } else {
       // Create new item
+      // Always provide sessionId (required), and userId if authenticated
       const newItem = await prisma.cartItem.create({
         data: {
-          sessionId: userId ? undefined : sessionId,
+          sessionId,
           userId: userId || undefined,
           productId: Number(productId),
           quantity,

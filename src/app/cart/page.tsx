@@ -136,7 +136,7 @@ const { data: session } = useSession()
               <div className="space-y-4">
                 <h1 className="text-3xl font-bold text-gray-900">Your cart is empty</h1>
                 <p className="text-gray-600 max-w-md mx-auto">
-                  Looks like you haven't added any items to your cart yet. 
+                  Looks like you haven&apos;t added any items to your cart yet. 
                   Start shopping to fill it up!
                 </p>
               </div>
