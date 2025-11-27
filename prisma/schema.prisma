@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Cart items stored per session/user
+model CartItem {
+  id        String   @id @default(cuid())
+  sessionId String   // For guest users, use session ID
+  userId    String?  // For authenticated users (optional for now)
+  productId Int      // Product ID from fakestoreapi
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sessionId])
+  @@index([userId])
+  @@unique([sessionId, productId])
+  @@unique([userId, productId])
+}
+
+// Orders
+model Order {
+  id         String      @id @default(cuid())
+  sessionId  String      // For guest users
+  userId     String?     // For authenticated users (optional)
+  total      Float
+  status     String      @default("pending") // pending, completed, cancelled
+  email      String?     // Customer email
+  name       String?     // Customer name
+  address    String?     // Shipping address
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  items      OrderItem[]
+
+  @@index([sessionId])
+  @@index([userId])
+}
+
+// Order items (products in an order)
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  productId Int      // Product ID from fakestoreapi
+  title     String   // Store product title at time of order
+  price     Float    // Store price at time of order
+  quantity  Int
+  image     String?  // Store image URL
+  createdAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+// User favorites/wishlist
+model Favorite {
+  id        String   @id @default(cuid())
+  sessionId String   // For guest users
+  userId    String?  // For authenticated users
+  productId Int      // Product ID from fakestoreapi
+  createdAt DateTime @default(now())
+
+  @@unique([sessionId, productId])
+  @@unique([userId, productId])
+  @@index([sessionId])
+  @@index([userId])
+}
+
+// Product reviews
+model Review {
+  id        String   @id @default(cuid())
+  productId Int      // Product ID from fakestoreapi
+  sessionId String   // For guest users
+  userId    String?  // For authenticated users
+  rating    Int      // 1-5 stars
+  comment   String?
+  name      String?  // Reviewer name
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@index([sessionId])
+  @@index([userId])
+}
+
+// NextAuth.js models
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // For credentials provider
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

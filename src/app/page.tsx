@@ -1,103 +1,242 @@
-import Image from "next/image";
+'use client'
+
+import { motion } from 'framer-motion'
+import { useQuery } from '@tanstack/react-query'
+import { fetchProducts } from '@/lib/api'
+import { Header } from '@/components/header'
+import { Footer } from '@/components/footer'
+import { ProductCard } from '@/components/product-card'
+import { Button } from '@/components/ui/button'
+import { ArrowRight, Star, Truck, Shield, RotateCcw } from 'lucide-react'
+import Link from 'next/link'
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { data: products, isLoading } = useQuery({
+    queryKey: ['products'],
+    queryFn: fetchProducts,
+  })
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const featuredProducts = products?.slice(0, 8) || []
+  const bestSellers = products?.filter(p => p.rating.rate >= 4.5).slice(0, 4) || []
+
+  return (
+    <div className="min-h-screen bg-white">
+      <Header />
+      
+      <main>
+        {/* Hero Section */}
+        <section className="relative bg-gradient-to-br from-white via-gray-50 to-accent/10 py-20 lg:py-32">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                className="space-y-8"
+              >
+                <div className="space-y-4">
+                  <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                    Premium Products for a 
+                    <span className="text-primary"> Modern Lifestyle</span>
+                  </h1>
+                  <p className="text-xl text-gray-600 leading-relaxed">
+                    Discover our curated collection of high-quality products designed 
+                    to enhance your daily experience. From electronics to fashion, 
+                    we bring you the best from around the world.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link href="/products">
+                    <Button size="lg" className="bg-primary hover:bg-primary/90 text-white px-8 py-3">
+                      Shop Now
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </Link>
+                  <Link href="/products?category=electronics">
+                    <Button variant="outline" size="lg" className="px-8 py-3">
+                      Explore Electronics
+                    </Button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center space-x-8 pt-8">
+                  <div className="flex items-center space-x-2">
+                    <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-medium">4.9/5 Rating</span>
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    More than 25,000 satisfied customers
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="relative"
+              >
+                <div className="relative bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl p-8">
+                  <div className="grid grid-cols-2 gap-4">
+                    {featuredProducts.slice(0, 4).map((product, index) => (
+                      <motion.div
+                        key={product.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                        className="bg-white rounded-2xl p-4 shadow-lg"
+                      >
+                        <div className="aspect-square bg-gray-50 rounded-xl mb-3 relative overflow-hidden">
+                          <img
+                            src={product.image}
+                            alt={product.title}
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                        <h3 className="font-medium text-sm line-clamp-2 mb-1">
+                          {product.title}
+                        </h3>
+                        <p className="text-primary font-bold">${product.price}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="text-center space-y-4"
+              >
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                  <Truck className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold">Free Shipping</h3>
+                <p className="text-gray-600">Free shipping on orders over $50</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-center space-y-4"
+              >
+                <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto">
+                  <Shield className="h-8 w-8 text-accent" />
+                </div>
+                <h3 className="text-xl font-semibold">Secure Payment</h3>
+                <p className="text-gray-600">Your payment information is safe</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-center space-y-4"
+              >
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                  <RotateCcw className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold">Easy Returns</h3>
+                <p className="text-gray-600">30-day return policy</p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Best Sellers Section */}
+        <section className="py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center space-y-4 mb-12">
+              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                Best Sellers
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Discover our most popular products loved by thousands of customers
+              </p>
+            </div>
+
+            {isLoading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="bg-gray-200 aspect-square rounded-lg mb-4"></div>
+                    <div className="space-y-2">
+                      <div className="h-4 bg-gray-200 rounded"></div>
+                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                      <div className="h-6 bg-gray-200 rounded w-1/2"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {bestSellers.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )}
+
+            <div className="text-center mt-12">
+              <Link href="/products">
+                <Button variant="outline" size="lg">
+                  View All Products
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Categories Section */}
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center space-y-4 mb-12">
+              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                Shop by Category
+              </h2>
+              <p className="text-xl text-gray-600">
+                Find exactly what you're looking for
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {[
+                { name: 'Electronics', href: '/products?category=electronics', color: 'bg-blue-100' },
+                { name: 'Clothing', href: '/products?category=clothing', color: 'bg-green-100' },
+                { name: 'Jewelry', href: '/products?category=jewelry', color: 'bg-purple-100' },
+                { name: 'Home & Garden', href: '/products?category=home', color: 'bg-orange-100' },
+              ].map((category, index) => (
+                <motion.div
+                  key={category.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Link href={category.href}>
+                    <div className={`${category.color} rounded-2xl p-8 text-center hover:shadow-lg transition-all duration-300 cursor-pointer group`}>
+                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                        {category.name}
+                      </h3>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
         </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      <Footer />
     </div>
-  );
+  )
 }
