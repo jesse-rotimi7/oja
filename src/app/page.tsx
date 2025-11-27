@@ -1,5 +1,6 @@
 'use client'
 
+import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
 import { fetchProducts } from '@/lib/api'
@@ -16,7 +17,16 @@ export default function Home() {
     queryFn: fetchProducts,
   })
 
-  const featuredProducts = products?.slice(0, 8) || []
+  const featuredProducts = useMemo(() => {
+    if (!products || products.length === 0) return []
+    const shuffled = [...products]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    return shuffled.slice(0, 8)
+  }, [products])
+
   const bestSellers = products?.filter(p => p.rating.rate >= 4.5).slice(0, 4) || []
 
   return (
@@ -53,9 +63,9 @@ export default function Home() {
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </Link>
-                  <Link href="/products?category=electronics">
+                  <Link href="/products?category=smartphones">
                     <Button variant="outline" size="lg" className="px-8 py-3">
-                      Explore Electronics
+                      Explore Smartphones
                     </Button>
                   </Link>
                 </div>
@@ -211,10 +221,10 @@ export default function Home() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
-                { name: 'Electronics', href: '/products?category=electronics', color: 'bg-blue-100' },
-                { name: 'Clothing', href: '/products?category=clothing', color: 'bg-green-100' },
-                { name: 'Jewelry', href: '/products?category=jewelry', color: 'bg-purple-100' },
-                { name: 'Home & Garden', href: '/products?category=home', color: 'bg-orange-100' },
+                { name: 'Smartphones', href: '/products?category=smartphones', color: 'bg-blue-100' },
+                { name: 'Laptops', href: '/products?category=laptops', color: 'bg-green-100' },
+                { name: 'Fragrances', href: '/products?category=fragrances', color: 'bg-purple-100' },
+                { name: 'Groceries', href: '/products?category=groceries', color: 'bg-orange-100' },
               ].map((category, index) => (
                 <motion.div
                   key={category.name}

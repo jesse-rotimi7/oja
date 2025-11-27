@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -17,10 +17,43 @@ import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, CreditCard } from 'lucide-
 
 export default function CartPage() {
   const router = useRouter()
-  const { data: session } = useSession()
+const { data: session } = useSession()
   const { items, updateQuantity, removeItem, getTotalPrice, getTotalItems, clearCart } = useCartStore()
   const [isCheckingOut, setIsCheckingOut] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  interface UserProfile {
+    addressLine1?: string
+    addressLine2?: string
+    city?: string
+    state?: string
+    postalCode?: string
+    country?: string
+  }
+
+  const [profile, setProfile] = useState<UserProfile | null>(null)
+  const [profileLoading, setProfileLoading] = useState(false)
+
+  useEffect(() => {
+    if (!session?.user?.id) {
+      setProfile(null)
+      return
+    }
+    const loadProfile = async () => {
+      setProfileLoading(true)
+      try {
+        const res = await fetch('/api/profile')
+        if (res.ok) {
+          const data = await res.json()
+          setProfile(data.profile)
+        }
+      } catch (error) {
+        console.error('Failed to load profile', error)
+      } finally {
+        setProfileLoading(false)
+      }
+    }
+    loadProfile()
+  }, [session])
 
   const handleCheckout = async () => {
     if (items.length === 0) return
@@ -29,6 +62,28 @@ export default function CartPage() {
     setError(null)
 
     try {
+      if (session?.user && !profileLoading) {
+        const hasAddress = profile?.addressLine1 && profile?.city && profile?.country
+        if (!hasAddress) {
+          setError('Please add a shipping address in your profile before checking out.')
+          setIsCheckingOut(false)
+          return
+        }
+      }
+
+      const addressString = profile
+        ? [
+            profile.addressLine1,
+            profile.addressLine2,
+            profile.city,
+            profile.state,
+            profile.postalCode,
+            profile.country,
+          ]
+            .filter(Boolean)
+            .join(', ')
+        : undefined
+
       const orderItems = items.map(item => ({
         productId: item.id,
         title: item.title,
@@ -44,6 +99,7 @@ export default function CartPage() {
           items: orderItems,
           email: session?.user?.email,
           name: session?.user?.name,
+          address: addressString,
         }),
       })
 
@@ -244,6 +300,41 @@ export default function CartPage() {
                     </h2>
 
                     <div className="space-y-4">
+                      {session?.user && (
+                        <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 text-sm text-gray-600">
+                          {profileLoading ? (
+                            'Loading your saved address...'
+                          ) : profile?.addressLine1 ? (
+                            <>
+                              <div className="font-medium text-gray-900 mb-1">Shipping to</div>
+                              <p className="text-gray-600">
+                                {[profile.addressLine1, profile.addressLine2].filter(Boolean).join(', ')}
+                                <br />
+                                {[profile.city, profile.state, profile.postalCode].filter(Boolean).join(', ')}
+                                <br />
+                                {profile.country}
+                              </p>
+                              <Link
+                                href="/account/profile"
+                                className="text-primary text-sm font-medium mt-2 inline-block"
+                              >
+                                Edit address
+                              </Link>
+                            </>
+                          ) : (
+                            <>
+                              <p>You have not added a shipping address yet.</p>
+                              <Link
+                                href="/account/profile"
+                                className="text-primary text-sm font-medium mt-2 inline-block"
+                              >
+                                Add address
+                              </Link>
+                            </>
+                          )}
+                        </div>
+                      )}
+
                       <div className="flex justify-between text-sm">
                         <span>Subtotal ({getTotalItems()} items)</span>
                         <span>${getTotalPrice().toFixed(2)}</span>

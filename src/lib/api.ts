@@ -1,13 +1,40 @@
 import { Product } from './store'
 
-const API_BASE_URL = 'https://fakestoreapi.com'
+const API_BASE_URL = 'https://dummyjson.com'
+const DEFAULT_LIMIT = 100
+
+interface DummyProduct {
+  id: number
+  title: string
+  description: string
+  price: number
+  category: string
+  rating: number
+  stock?: number
+  thumbnail?: string
+  images?: string[]
+}
+
+const transformProduct = (product: DummyProduct): Product => ({
+  id: product.id,
+  title: product.title,
+  price: product.price,
+  description: product.description,
+  category: product.category,
+  image: product.thumbnail || product.images?.[0] || '',
+  rating: {
+    rate: product.rating,
+    count: product.stock ?? 0,
+  },
+})
 
 export const fetchProducts = async (): Promise<Product[]> => {
-  const response = await fetch(`${API_BASE_URL}/products`)
+  const response = await fetch(`${API_BASE_URL}/products?limit=${DEFAULT_LIMIT}`)
   if (!response.ok) {
     throw new Error('Failed to fetch products')
   }
-  return response.json()
+  const data = await response.json()
+  return (data.products || []).map(transformProduct)
 }
 
 export const fetchProduct = async (id: number): Promise<Product> => {
@@ -15,7 +42,8 @@ export const fetchProduct = async (id: number): Promise<Product> => {
   if (!response.ok) {
     throw new Error('Failed to fetch product')
   }
-  return response.json()
+  const data: DummyProduct = await response.json()
+  return transformProduct(data)
 }
 
 export const fetchCategories = async (): Promise<string[]> => {
@@ -23,15 +51,24 @@ export const fetchCategories = async (): Promise<string[]> => {
   if (!response.ok) {
     throw new Error('Failed to fetch categories')
   }
-  return response.json()
+  const data = await response.json()
+  if (Array.isArray(data)) {
+    if (typeof data[0] === 'string') {
+      return data
+    }
+    return data.map((item: any) => item?.slug || item?.name || item).filter(Boolean)
+  }
+  return []
 }
 
 export const fetchProductsByCategory = async (category: string): Promise<Product[]> => {
-  const response = await fetch(`${API_BASE_URL}/products/category/${category}`)
+  const response = await fetch(
+    `${API_BASE_URL}/products/category/${encodeURIComponent(category)}?limit=${DEFAULT_LIMIT}`
+  )
   if (!response.ok) {
     throw new Error('Failed to fetch products by category')
   }
-  return response.json()
+  const data = await response.json()
+  return (data.products || []).map(transformProduct)
 }
-
 

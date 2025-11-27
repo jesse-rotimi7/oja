@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -12,16 +13,24 @@ export function Footer() {
               Your trusted destination for premium products. Discover quality, 
               style, and innovation in every purchase.
             </p>
-            <div className="flex space-x-4">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white text-sm font-bold">f</span>
-              </div>
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white text-sm font-bold">t</span>
-              </div>
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white text-sm font-bold">i</span>
-              </div>
+            <div className="flex space-x-3">
+              {[
+                { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
+                { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
+                { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
+                { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+              ].map(({ icon: Icon, href, label }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:text-primary hover:border-primary transition-colors"
+                  aria-label={label}
+                >
+                  <Icon className="h-4 w-4" />
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -35,18 +44,18 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=electronics" className="text-gray-600 hover:text-primary transition-colors">
-                  Electronics
+                <Link href="/products?category=smartphones" className="text-gray-600 hover:text-primary transition-colors">
+                  Smartphones
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=clothing" className="text-gray-600 hover:text-primary transition-colors">
-                  Clothing
+                <Link href="/products?category=laptops" className="text-gray-600 hover:text-primary transition-colors">
+                  Laptops
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=jewelry" className="text-gray-600 hover:text-primary transition-colors">
-                  Jewelry
+                <Link href="/products?category=fragrances" className="text-gray-600 hover:text-primary transition-colors">
+                  Fragrances
                 </Link>
               </li>
             </ul>

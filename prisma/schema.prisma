@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,62 +7,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Cart items stored per session/user
 model CartItem {
   id        String   @id @default(cuid())
-  sessionId String   // For guest users, use session ID
-  userId    String?  // For authenticated users (optional for now)
-  productId Int      // Product ID from fakestoreapi
+  sessionId String
+  userId    String?
+  productId Int
   quantity  Int      @default(1)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([sessionId])
-  @@index([userId])
   @@unique([sessionId, productId])
   @@unique([userId, productId])
+  @@index([sessionId])
+  @@index([userId])
 }
 
-// Orders
 model Order {
-  id         String      @id @default(cuid())
-  sessionId  String      // For guest users
-  userId     String?     // For authenticated users (optional)
-  total      Float
-  status     String      @default("pending") // pending, completed, cancelled
-  email      String?     // Customer email
-  name       String?     // Customer name
-  address    String?     // Shipping address
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  items      OrderItem[]
+  id        String      @id @default(cuid())
+  sessionId String
+  userId    String?
+  total     Float
+  status    String      @default("pending")
+  email     String?
+  name      String?
+  address   String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  items     OrderItem[]
 
   @@index([sessionId])
   @@index([userId])
 }
 
-// Order items (products in an order)
 model OrderItem {
   id        String   @id @default(cuid())
   orderId   String
-  productId Int      // Product ID from fakestoreapi
-  title     String   // Store product title at time of order
-  price     Float    // Store price at time of order
+  productId Int
+  title     String
+  price     Float
   quantity  Int
-  image     String?  // Store image URL
+  image     String?
   createdAt DateTime @default(now())
-
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([orderId])
 }
 
-// User favorites/wishlist
 model Favorite {
   id        String   @id @default(cuid())
-  sessionId String   // For guest users
-  userId    String?  // For authenticated users
-  productId Int      // Product ID from fakestoreapi
+  sessionId String
+  userId    String?
+  productId Int
   createdAt DateTime @default(now())
 
   @@unique([sessionId, productId])
@@ -74,15 +66,14 @@ model Favorite {
   @@index([userId])
 }
 
-// Product reviews
 model Review {
   id        String   @id @default(cuid())
-  productId Int      // Product ID from fakestoreapi
-  sessionId String   // For guest users
-  userId    String?  // For authenticated users
-  rating    Int      // 1-5 stars
+  productId Int
+  sessionId String
+  userId    String?
+  rating    Int
   comment   String?
-  name      String?  // Reviewer name
+  name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -91,16 +82,21 @@ model Review {
   @@index([userId])
 }
 
-// NextAuth.js models
 model User {
   id            String    @id @default(cuid())
-  name          String?
   email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?   // For credentials provider
+  name          String?
+  password      String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  emailVerified DateTime?
+  image         String?
+  addressLine1  String?
+  addressLine2  String?
+  city          String?
+  state         String?
+  postalCode    String?
+  country       String?
   accounts      Account[]
   sessions      Session[]
 }
@@ -111,15 +107,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
