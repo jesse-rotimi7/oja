@@ -10,7 +10,7 @@ import { CheckCircle, Package, Truck, Mail, ArrowRight, Home } from 'lucide-reac
 
 export default function CheckoutSuccessPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
       <Header />
       
       <main className="pt-20">
@@ -28,17 +28,17 @@ export default function CheckoutSuccessPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex justify-center"
             >
-              <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center">
-                <CheckCircle className="h-12 w-12 text-green-600" />
+              <div className="w-24 h-24 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                <CheckCircle className="h-12 w-12 text-green-600 dark:text-green-400" />
               </div>
             </motion.div>
 
             {/* Success Message */}
             <div className="space-y-4">
-              <h1 className="text-3xl lg:text-4xl font-bold text-gray-900">
+              <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
                 Order Confirmed!
               </h1>
-              <p className="text-xl text-gray-600">
+              <p className="text-xl text-gray-600 dark:text-gray-400">
                 Thank you for your purchase. Your order has been successfully placed.
               </p>
             </div>
@@ -49,24 +49,24 @@ export default function CheckoutSuccessPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <Card className="text-left">
+              <Card className="text-left bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700/50">
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-600">Order Number</span>
-                      <span className="text-sm font-mono">#OJA-{Math.random().toString(36).substr(2, 9).toUpperCase()}</span>
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Order Number</span>
+                      <span className="text-sm font-mono text-gray-900 dark:text-white">#OJA-{Math.random().toString(36).substr(2, 9).toUpperCase()}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-600">Order Date</span>
-                      <span className="text-sm">{new Date().toLocaleDateString()}</span>
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Order Date</span>
+                      <span className="text-sm text-gray-900 dark:text-white">{new Date().toLocaleDateString()}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-600">Payment Method</span>
-                      <span className="text-sm">Credit Card</span>
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Payment Method</span>
+                      <span className="text-sm text-gray-900 dark:text-white">Credit Card</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-600">Estimated Delivery</span>
-                      <span className="text-sm">{new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString()}</span>
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Estimated Delivery</span>
+                      <span className="text-sm text-gray-900 dark:text-white">{new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString()}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -80,36 +80,36 @@ export default function CheckoutSuccessPage() {
               transition={{ duration: 0.5, delay: 0.6 }}
               className="space-y-6"
             >
-              <h2 className="text-xl font-semibold text-gray-900">What&apos;s Next?</h2>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">What&apos;s Next?</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Mail className="h-5 w-5 text-blue-600" />
+                <div className="flex items-center space-x-3 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-700/50">
+                  <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                    <Mail className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div className="text-left">
-                    <p className="text-sm font-medium text-gray-900">Email Confirmation</p>
-                    <p className="text-xs text-gray-600">Check your inbox</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">Email Confirmation</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">Check your inbox</p>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-                  <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-                    <Package className="h-5 w-5 text-yellow-600" />
+                <div className="flex items-center space-x-3 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-700/50">
+                  <div className="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center">
+                    <Package className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
                   </div>
                   <div className="text-left">
-                    <p className="text-sm font-medium text-gray-900">Order Processing</p>
-                    <p className="text-xs text-gray-600">Within 24 hours</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">Order Processing</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">Within 24 hours</p>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <Truck className="h-5 w-5 text-green-600" />
+                <div className="flex items-center space-x-3 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-700/50">
+                  <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                    <Truck className="h-5 w-5 text-green-600 dark:text-green-400" />
                   </div>
                   <div className="text-left">
-                    <p className="text-sm font-medium text-gray-900">Shipping</p>
-                    <p className="text-xs text-gray-600">2-3 business days</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">Shipping</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">2-3 business days</p>
                   </div>
                 </div>
               </div>
@@ -123,13 +123,13 @@ export default function CheckoutSuccessPage() {
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <Link href="/products">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25">
                   Continue Shopping
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Link href="/">
-                <Button variant="outline" size="lg">
+                <Button variant="outline" size="lg" className="dark:border-gray-700 dark:text-gray-200">
                   <Home className="mr-2 h-5 w-5" />
                   Back to Home
                 </Button>
@@ -141,10 +141,10 @@ export default function CheckoutSuccessPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 1 }}
-              className="pt-8 border-t"
+              className="pt-8 border-t border-gray-200 dark:border-gray-800"
             >
               <div className="text-center space-y-2">
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Need help with your order?
                 </p>
                 <div className="flex justify-center space-x-6">

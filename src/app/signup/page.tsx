@@ -71,29 +71,29 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
       <Header />
       
       <main className="pt-20 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center min-h-[60vh]">
-            <Card className="w-full max-w-md">
+            <Card className="w-full max-w-md bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700/50">
               <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl font-bold text-center">Create an account</CardTitle>
-                <CardDescription className="text-center">
+                <CardTitle className="text-2xl font-bold text-center text-gray-900 dark:text-white">Create an account</CardTitle>
+                <CardDescription className="text-center dark:text-gray-400">
                   Sign up to get started with your shopping
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {error && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+                    <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-md text-sm">
                       {error}
                     </div>
                   )}
                   
                   <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-medium">
+                    <label htmlFor="name" className="text-sm font-medium text-gray-900 dark:text-gray-200">
                       Name (optional)
                     </label>
                     <Input
@@ -102,11 +102,12 @@ export default function SignupPage() {
                       placeholder="John Doe"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
+                      className="dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium">
+                    <label htmlFor="email" className="text-sm font-medium text-gray-900 dark:text-gray-200">
                       Email
                     </label>
                     <Input
@@ -116,11 +117,12 @@ export default function SignupPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
+                      className="dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <label htmlFor="password" className="text-sm font-medium">
+                    <label htmlFor="password" className="text-sm font-medium text-gray-900 dark:text-gray-200">
                       Password
                     </label>
                     <Input
@@ -131,11 +133,12 @@ export default function SignupPage() {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       minLength={6}
+                      className="dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <label htmlFor="confirmPassword" className="text-sm font-medium">
+                    <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-900 dark:text-gray-200">
                       Confirm Password
                     </label>
                     <Input
@@ -146,12 +149,13 @@ export default function SignupPage() {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       required
                       minLength={6}
+                      className="dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
                     />
                   </div>
                   
                   <Button
                     type="submit"
-                    className="w-full bg-primary hover:bg-primary/90 text-white"
+                    className="w-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25"
                     disabled={loading}
                   >
                     {loading ? 'Creating account...' : 'Sign up'}
@@ -159,7 +163,7 @@ export default function SignupPage() {
                 </form>
               </CardContent>
               <CardFooter className="flex flex-col space-y-4">
-                <div className="text-sm text-center text-gray-600">
+                <div className="text-sm text-center text-gray-600 dark:text-gray-400">
                   Already have an account?{' '}
                   <Link href="/login" className="text-primary hover:underline font-medium">
                     Sign in

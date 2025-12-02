@@ -98,87 +98,87 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
       <Header />
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <Card>
+            <Card className="bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700/50">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold">Profile & Address</CardTitle>
-                <p className="text-gray-600">
+                <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">Profile & Address</CardTitle>
+                <p className="text-gray-600 dark:text-gray-400">
                   Keep your shipping information up to date for faster checkout.
                 </p>
               </CardHeader>
               <CardContent>
                 {loading ? (
-                  <p className="text-sm text-gray-500">Loading profile...</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Loading profile...</p>
                 ) : (
                   <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
-                      <label className="text-sm font-medium text-gray-700">Full Name</label>
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Full Name</label>
                       <Input
                         value={profile.name}
                         onChange={handleChange('name')}
                         placeholder="John Doe"
-                        className="mt-2"
+                        className="mt-2 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-700">Address Line 1</label>
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Address Line 1</label>
                       <Input
                         value={profile.addressLine1}
                         onChange={handleChange('addressLine1')}
                         placeholder="123 Main Street"
-                        className="mt-2"
+                        className="mt-2 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-700">Address Line 2</label>
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Address Line 2</label>
                       <Input
                         value={profile.addressLine2}
                         onChange={handleChange('addressLine2')}
                         placeholder="Apartment, suite, etc."
-                        className="mt-2"
+                        className="mt-2 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
                       />
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="text-sm font-medium text-gray-700">City</label>
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-200">City</label>
                         <Input
                           value={profile.city}
                           onChange={handleChange('city')}
                           placeholder="City"
-                          className="mt-2"
+                          className="mt-2 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-gray-700">State/Province</label>
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-200">State/Province</label>
                         <Input
                           value={profile.state}
                           onChange={handleChange('state')}
                           placeholder="State"
-                          className="mt-2"
+                          className="mt-2 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
                         />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="text-sm font-medium text-gray-700">Postal Code</label>
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Postal Code</label>
                         <Input
                           value={profile.postalCode}
                           onChange={handleChange('postalCode')}
                           placeholder="Postal Code"
-                          className="mt-2"
+                          className="mt-2 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-gray-700">Country</label>
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Country</label>
                         <Input
                           value={profile.country}
                           onChange={handleChange('country')}
                           placeholder="Country"
-                          className="mt-2"
+                          className="mt-2 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
                         />
                       </div>
                     </div>
@@ -188,15 +188,15 @@ export default function ProfilePage() {
                         className={cn(
                           'text-sm',
                           message.includes('success')
-                            ? 'text-green-600'
-                            : 'text-red-600'
+                            ? 'text-green-600 dark:text-green-400'
+                            : 'text-red-600 dark:text-red-400'
                         )}
                       >
                         {message}
                       </p>
                     )}
 
-                    <Button type="submit" disabled={saving} className="w-full sm:w-auto">
+                    <Button type="submit" disabled={saving} className="w-full sm:w-auto shadow-lg shadow-primary/25">
                       {saving ? 'Saving...' : 'Save Changes'}
                     </Button>
                   </form>
