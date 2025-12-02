@@ -10,7 +10,7 @@ import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { ProductCard } from '@/components/product-card'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Star, Truck, Shield, RotateCcw, Clock, Heart } from 'lucide-react'
+import { ArrowRight, Star, Truck, Shield, RotateCcw, Heart } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Home() {
@@ -471,7 +471,7 @@ export default function Home() {
                 { icon: Truck, title: 'Free Shipping', description: 'Free shipping on orders over $50', iconBg: 'bg-primary/10', iconColor: 'text-primary', glowColor: 'bg-primary/5', accentColor: 'from-primary to-primary/50', delay: 0 },
                 { icon: Shield, title: 'Secure Payment', description: 'Your payment information is safe', iconBg: 'bg-accent/10', iconColor: 'text-accent', glowColor: 'bg-accent/5', accentColor: 'from-accent to-accent/50', delay: 0.1 },
                 { icon: RotateCcw, title: 'Easy Returns', description: '30-day return policy', iconBg: 'bg-primary/10', iconColor: 'text-primary', glowColor: 'bg-primary/5', accentColor: 'from-primary to-primary/50', delay: 0.2 },
-              ].map((feature, index) => (
+              ].map((feature) => (
               <motion.div
                   key={feature.title}
                   initial={{ opacity: 0, y: 30 }}

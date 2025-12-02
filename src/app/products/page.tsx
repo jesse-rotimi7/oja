@@ -262,7 +262,7 @@ function ProductsContent() {
                   No products found
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
-                  Try adjusting your search or filter criteria to find what you're looking for
+                  Try adjusting your search or filter criteria to find what you&apos;re looking for
                 </p>
                 <Button 
                   onClick={() => {
