@@ -1,0 +1,29 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0075F2"/>
+      <stop offset="50%" style="stop-color:#2563eb"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="bagGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#f0f0f0"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="180" height="180" rx="40" fill="url(#bgGradient)"/>
+  
+  <!-- Shopping bag body -->
+  <path d="M50 65C50 61.6863 52.6863 59 56 59H124C127.314 59 130 61.6863 130 65V145C130 148.314 127.314 151 124 151H56C52.6863 151 50 148.314 50 145V65Z" fill="white"/>
+  
+  <!-- Bag handle -->
+  <path d="M70 59V52C70 38.7452 80.7452 28 94 28C107.255 28 118 38.7452 118 52V59" stroke="white" stroke-width="10" stroke-linecap="round" fill="none"/>
+  
+  <!-- Letter O (stylized circle) -->
+  <circle cx="90" cy="105" r="25" stroke="url(#bgGradient)" stroke-width="10" fill="none"/>
+  
+  <!-- Small shine/highlight -->
+  <circle cx="68" cy="80" r="6" fill="url(#bgGradient)" fill-opacity="0.3"/>
+</svg>
+
