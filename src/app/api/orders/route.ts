@@ -56,7 +56,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    let body: any
+    let body: {
+      items?: Array<{
+        productId: number
+        title: string
+        price: number
+        quantity: number
+        image?: string
+      }>
+      email?: string
+      name?: string
+      address?: string
+    }
     try {
       body = await request.json()
     } catch (parseError) {
