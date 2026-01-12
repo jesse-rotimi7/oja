@@ -1,8 +1,7 @@
 # Backend Setup Guide
 
-This project uses a **hybrid approach**:
-- **Products**: Fetched from [fakestoreapi.com](https://fakestoreapi.com) (external API)
-- **Cart, Orders, Favorites**: Stored in your PostgreSQL database
+This project uses PostgreSQL for data persistence:
+- Cart, Orders, Favorites, and User data are stored in PostgreSQL
 
 ## Quick Setup
 
@@ -28,11 +27,11 @@ Choose one of these free options:
 
 ### 2. Configure Environment Variables
 
-1. Copy `.env.example` to `.env` (or create `.env` file)
-2. Add your database connection string:
-   ```
-   DATABASE_URL="postgresql://user:password@host:port/database"
-   ```
+Create a `.env` file in the root directory and add your database connection string:
+
+```env
+DATABASE_URL="postgresql://user:password@host:port/database"
+```
 
 ### 3. Set Up Database
 
@@ -74,18 +73,11 @@ Your backend provides these endpoints:
 - `POST /api/favorites` - Add to favorites
 - `DELETE /api/favorites` - Remove from favorites
 
-## How It Works
+## Architecture
 
-1. **Products** are still fetched from fakestoreapi (no change needed)
-2. **Cart/Orders/Favorites** are saved to your PostgreSQL database
-3. Uses **session-based** authentication (no login required for basic features)
-4. Each user gets a unique session ID stored in cookies
-
-## Development
-
-- The app works **without** a database (cart uses localStorage as fallback)
-- To use the backend, just set `DATABASE_URL` and run migrations
-- Check `src/lib/api-backend.ts` for helper functions
+- Cart, Orders, and Favorites are persisted in PostgreSQL
+- Session-based authentication for guest users
+- User-based authentication for registered users (see `AUTH_SETUP.md`)
 
 ## Troubleshooting
 
@@ -99,10 +91,4 @@ Your backend provides these endpoints:
 **Error: Prisma Client not generated**
 - Run `npm run db:generate`
 
-## Next Steps
-
-- Add authentication (NextAuth.js) for user accounts
-- Add product reviews API
-- Add admin dashboard for order management
-- Add email notifications for orders
 

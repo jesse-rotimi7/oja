@@ -1,14 +1,17 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Star, ShoppingCart } from 'lucide-react'
+import { Star, ShoppingCart, CheckCircle2 } from 'lucide-react'
 import { Product } from '@/lib/store'
 import { useCartStore } from '@/lib/store'
 import { formatPrice } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { useToast } from '@/hooks/use-toast'
+import { motion } from 'framer-motion'
 
 interface ProductCardProps {
   product: Product
@@ -17,16 +20,31 @@ interface ProductCardProps {
 
 export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem)
+  const { toast } = useToast()
+  const [isAdded, setIsAdded] = useState(false)
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
     addItem(product)
+    setIsAdded(true)
+    
+    toast({
+      title: "Added to Cart!",
+      description: `${product.title}`,
+      type: "success",
+    })
+    
+    // Reset button state after animation
+    setTimeout(() => {
+      setIsAdded(false)
+    }, 2000)
   }
 
   // List View Layout
   if (viewMode === 'list') {
     return (
+      <>
       <Link href={`/products/${product.id}`}>
         <Card className="group hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all duration-300 overflow-hidden bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700/50 backdrop-blur-sm">
           <div className="flex flex-col sm:flex-row">
@@ -86,24 +104,55 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                   </p>
                   <p className="text-xs text-green-600 dark:text-green-400 font-medium">Free Shipping</p>
                 </div>
-                <Button
-                  onClick={handleAddToCart}
-                  className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25 px-6"
-                  size="default"
-                >
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  Add to Cart
-                </Button>
+                <div className="relative">
+                  <Button
+                    onClick={handleAddToCart}
+                    className={`w-full sm:w-auto text-white shadow-lg shadow-primary/25 px-6 transition-all duration-300 ${
+                      isAdded 
+                        ? 'bg-green-600 hover:bg-green-700' 
+                        : 'bg-primary hover:bg-primary/90'
+                    }`}
+                    size="default"
+                  >
+                    {isAdded ? (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="flex items-center gap-2"
+                      >
+                        <CheckCircle2 className="h-4 w-4" />
+                        <span>Added!</span>
+                      </motion.div>
+                    ) : (
+                      <>
+                        <ShoppingCart className="h-4 w-4 mr-2" />
+                        Add to Cart
+                      </>
+                    )}
+                  </Button>
+                  {isAdded && (
+                    <motion.div
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: [0, 1.2, 1], opacity: [0, 1, 1] }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      className="absolute -top-2 -right-2 bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-lg"
+                    >
+                      ✓
+                    </motion.div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </Card>
       </Link>
+    </>
     )
   }
 
   // Grid View Layout (default)
   return (
+    <>
     <Link href={`/products/${product.id}`}>
       <Card className="group hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all duration-300 overflow-hidden h-full flex flex-col bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700/50 backdrop-blur-sm">
         <div className="relative aspect-square bg-gray-50 dark:bg-gray-700/50 overflow-hidden">
@@ -135,17 +184,47 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
         </CardContent>
         
         <CardFooter className="p-4 pt-0">
-          <Button
-            onClick={handleAddToCart}
-            className="w-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25"
-            size="sm"
-          >
-            <ShoppingCart className="h-4 w-4 mr-2" />
-            Add to Cart
-          </Button>
+          <div className="relative w-full">
+            <Button
+              onClick={handleAddToCart}
+              className={`w-full text-white shadow-lg shadow-primary/25 transition-all duration-300 ${
+                isAdded 
+                  ? 'bg-green-600 hover:bg-green-700' 
+                  : 'bg-primary hover:bg-primary/90'
+              }`}
+              size="sm"
+            >
+              {isAdded ? (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="flex items-center gap-2"
+                >
+                  <CheckCircle2 className="h-4 w-4" />
+                  <span>Added!</span>
+                </motion.div>
+              ) : (
+                <>
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  Add to Cart
+                </>
+              )}
+            </Button>
+            {isAdded && (
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: [0, 1.2, 1], opacity: [0, 1, 1] }}
+                exit={{ scale: 0, opacity: 0 }}
+                className="absolute -top-2 -right-2 bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-lg z-10"
+              >
+                ✓
+              </motion.div>
+            )}
+          </div>
         </CardFooter>
       </Card>
     </Link>
+    </>
   )
 }
 

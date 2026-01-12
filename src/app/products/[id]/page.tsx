@@ -14,14 +14,17 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { ProductCard } from '@/components/product-card'
-import { Star, ShoppingCart, Heart, Share2, Truck, Shield, RotateCcw, ArrowLeft } from 'lucide-react'
+import { Star, ShoppingCart, Heart, Share2, Truck, Shield, RotateCcw, ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { useToast } from '@/hooks/use-toast'
 
 export default function ProductDetailsPage() {
   const params = useParams()
   const router = useRouter()
   const { addItem } = useCartStore()
+  const { toast } = useToast()
   const [quantity, setQuantity] = useState(1)
   const [selectedImage, setSelectedImage] = useState(0)
+  const [isAdded, setIsAdded] = useState(false)
 
   const { data: product, isLoading } = useQuery({
     queryKey: ['product', params.id],
@@ -38,6 +41,18 @@ export default function ProductDetailsPage() {
       for (let i = 0; i < quantity; i++) {
         addItem(product)
       }
+      setIsAdded(true)
+      
+      toast({
+        title: "Added to Cart!",
+        description: `${quantity} x ${product.title}`,
+        type: "success",
+      })
+      
+      // Reset button state after animation
+      setTimeout(() => {
+        setIsAdded(false)
+      }, 2000)
     }
   }
 
@@ -265,14 +280,43 @@ export default function ProductDetailsPage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    onClick={handleAddToCart}
-                    className="flex-1 bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105"
-                    size="lg"
-                  >
-                    <ShoppingCart className="h-5 w-5 mr-2" />
-                    Add to Cart
-                  </Button>
+                  <div className="relative flex-1">
+                    <Button
+                      onClick={handleAddToCart}
+                      className={`w-full text-white shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-105 ${
+                        isAdded 
+                          ? 'bg-green-600 hover:bg-green-700' 
+                          : 'bg-primary hover:bg-primary/90'
+                      }`}
+                      size="lg"
+                    >
+                      {isAdded ? (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="flex items-center gap-2"
+                        >
+                          <CheckCircle2 className="h-5 w-5" />
+                          <span>Added to Cart!</span>
+                        </motion.div>
+                      ) : (
+                        <>
+                          <ShoppingCart className="h-5 w-5 mr-2" />
+                          Add to Cart
+                        </>
+                      )}
+                    </Button>
+                    {isAdded && (
+                      <motion.div
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: [0, 1.3, 1], opacity: [0, 1, 1] }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        className="absolute -top-3 -right-3 bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold shadow-lg z-10 border-2 border-white dark:border-gray-800"
+                      >
+                        ✓
+                      </motion.div>
+                    )}
+                  </div>
                   <Button
                     variant="outline"
                     className="flex-1 border-2 dark:border-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-primary/50 transition-all duration-300 hover:scale-105"

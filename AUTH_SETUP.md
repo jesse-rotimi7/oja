@@ -42,23 +42,14 @@ This will create the User, Account, Session, and VerificationToken tables.
 
 ## Features
 
-✅ **Login/Signup pages** - Beautiful UI matching your design
-✅ **Password hashing** - Secure bcrypt encryption
-✅ **Session management** - JWT-based sessions
-✅ **Guest support** - Still works for non-authenticated users
-✅ **Header integration** - Shows user name and sign out button
-✅ **API routes updated** - Cart/Orders/Favorites work for both authenticated and guest users
+- Login and signup pages
+- Secure password hashing with bcrypt
+- JWT-based session management
+- Guest user support
+- User profile integration
 
 ## How It Works
 
 - **Authenticated users**: Data is tied to `userId`
-- **Guest users**: Data is tied to `sessionId` (existing functionality preserved)
-- When a guest signs up/logs in, their cart/orders can be migrated (future enhancement)
-
-## Next Steps (Optional)
-
-- Add OAuth providers (Google, GitHub, etc.)
-- Add email verification
-- Add password reset functionality
-- Migrate guest cart to user account on login
+- **Guest users**: Data is tied to `sessionId`
 
